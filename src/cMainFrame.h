@@ -18,6 +18,9 @@
 #include <wx/wx.h>
 #include <wx/treectrl.h>
 #include <wx/sizer.h>
+#include <wx/toolbar.h>
+#include <wx/bitmap.h>
+#include <wx/artprov.h>
 
 class cMainFrame : public wxFrame
 {
@@ -25,8 +28,20 @@ public:
     cMainFrame();
 
 private:
-    //wxTreeCtrl *m_viewsTree = nullptr;
+    wxMenuBar *menuBar = nullptr;
+    wxMenu *fileMenu = nullptr;
+    wxMenu *helpMenu = nullptr;
+    wxToolBar *toolBar = nullptr;
+    wxBoxSizer *topSizer = nullptr;
+    wxBoxSizer *contentSizer = nullptr;
+    wxTreeCtrl *serverTree = nullptr;
+    wxButton *button = nullptr;
 
     void OnExit(wxCommandEvent& event);
-    void OnAboutMenuOptionClick(wxCommandEvent& event);
+    void OnAbout(wxCommandEvent& event);
+    void OnServerAdd(wxCommandEvent& event);
+    void OnServerRemove(wxCommandEvent& event);
+    void OnServerSelect(wxTreeEvent& event);
+
+    wxDECLARE_EVENT_TABLE();
 };
