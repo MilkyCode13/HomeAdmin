@@ -16,6 +16,7 @@
  */
 
 #include <wx/wx.h>
+#include <wx/intl.h>
 #include <wx/treectrl.h>
 #include <wx/sizer.h>
 #include <wx/toolbar.h>
@@ -25,7 +26,7 @@
 class cMainFrame : public wxFrame
 {
 public:
-    cMainFrame();
+    cMainFrame(wxLocale& m_locale);
 
 private:
     wxMenuBar *menuBar = nullptr;
@@ -44,4 +45,6 @@ private:
     void OnServerSelect(wxTreeEvent& event);
 
     wxDECLARE_EVENT_TABLE();
+
+    wxLocale& m_locale;
 };

@@ -16,6 +16,7 @@
  */
 
 #include <wx/wx.h>
+#include <wx/intl.h>
 #include "cMainFrame.h"
 
 class cApp : public wxApp
@@ -25,4 +26,8 @@ private:
 
 public:
     virtual bool OnInit();
+
+protected:
+    wxLanguage m_lang;
+    wxLocale m_locale;
 };

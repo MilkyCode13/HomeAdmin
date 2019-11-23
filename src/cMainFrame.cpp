@@ -31,14 +31,14 @@ wxBEGIN_EVENT_TABLE(cMainFrame, wxFrame)
     EVT_TREE_SEL_CHANGED(ID_SERVER_LIST, cMainFrame::OnServerSelect)
 wxEND_EVENT_TABLE()
 
-cMainFrame::cMainFrame() : wxFrame(nullptr, wxID_ANY, "HomeAdmin")
+cMainFrame::cMainFrame(wxLocale& locale) : wxFrame(nullptr, wxID_ANY, "HomeAdmin"), m_locale(locale)
 {
     /*  
      *  Init cMainFrame Function
      */
     
     fileMenu = new wxMenu;
-    fileMenu->Append(wxID_ADD, "Add Server\tCtrl+N");
+    fileMenu->Append(wxID_ADD, _("Add Server\tCtrl+N"));
     fileMenu->AppendSeparator();
     fileMenu->Append(wxID_EXIT);
 
@@ -46,19 +46,19 @@ cMainFrame::cMainFrame() : wxFrame(nullptr, wxID_ANY, "HomeAdmin")
     helpMenu->Append(wxID_ABOUT);
 
     menuBar = new wxMenuBar;
-    menuBar->Append(fileMenu, "&File");
-    menuBar->Append(helpMenu, "&Help");
+    menuBar->Append(fileMenu, _("&File"));
+    menuBar->Append(helpMenu, _("&Help"));
 
     SetMenuBar(menuBar);
 
     toolBar = this->CreateToolBar();
-    toolBar->AddTool(wxID_ADD, "Add Server", wxArtProvider::GetBitmap(wxART_PLUS, wxART_TOOLBAR), "Add new server");
-    toolBar->AddTool(wxID_REMOVE, "Delete Server", wxArtProvider::GetBitmap(wxART_MINUS, wxART_TOOLBAR), "Remove selected server");
+    toolBar->AddTool(wxID_ADD, _("Add Server"), wxArtProvider::GetBitmap(wxART_PLUS, wxART_TOOLBAR), _("Add new server"));
+    toolBar->AddTool(wxID_REMOVE, _("Delete Server"), wxArtProvider::GetBitmap(wxART_MINUS, wxART_TOOLBAR), _("Remove selected server"));
 
     topSizer = new wxBoxSizer(wxHORIZONTAL);
 
     serverTree = new wxTreeCtrl(this, ID_SERVER_LIST, wxDefaultPosition, wxSize(250, 600));
-    serverTree->AddRoot("Servers");
+    serverTree->AddRoot(_("Servers"));
     serverTree->ExpandAll();
     topSizer->Add(serverTree, 0, wxEXPAND);
     contentSizer = new wxBoxSizer(wxVERTICAL);
@@ -77,13 +77,13 @@ void cMainFrame::OnExit(wxCommandEvent& event)
 
 void cMainFrame::OnAbout(wxCommandEvent& event)
 {
-    wxMessageBox("HomeAdmin version " + VERSION_TYPE + " " + VERSION, "About", wxICON_INFORMATION | wxOK);
+    wxMessageBox(wxString::Format(_("HomeAdmin version %s %s"), VERSION_TYPE, VERSION), _("About"), wxICON_INFORMATION | wxOK);
     event.Skip();
 }
 
 void cMainFrame::OnServerAdd(wxCommandEvent& event)
 {
-    wxTreeItemId newServer = serverTree->AppendItem(serverTree->GetRootItem(), "New Server");
+    wxTreeItemId newServer = serverTree->AppendItem(serverTree->GetRootItem(), _("New Server"));
     serverTree->Expand(serverTree->GetRootItem());
     serverTree->EditLabel(newServer);
     event.Skip();
@@ -94,7 +94,7 @@ void cMainFrame::OnServerRemove(wxCommandEvent& event)
     wxTreeItemId deleteServer = serverTree->GetSelection();
     if(serverTree->GetItemParent(deleteServer).IsOk())
     {
-        wxMessageDialog confirm(this, "Do you really want to delete the server? This action will be irreversable!", "Attention", wxOK | wxCANCEL | wxCANCEL_DEFAULT | wxICON_QUESTION, wxDefaultPosition);
+        wxMessageDialog confirm(this, _("Do you really want to delete the server? This action will be irreversable!"), _("Attention"), wxOK | wxCANCEL | wxCANCEL_DEFAULT | wxICON_QUESTION, wxDefaultPosition);
         if(confirm.ShowModal() == wxID_OK)
             serverTree->Delete(deleteServer);
     }

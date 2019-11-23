@@ -21,7 +21,15 @@ wxIMPLEMENT_APP(cApp);
 
 bool cApp::OnInit()
 {
-    m_frame = new cMainFrame();
+    m_lang = (wxLanguage)wxLocale::GetSystemLanguage();
+    m_locale.Init(m_lang, wxLOCALE_DONT_LOAD_DEFAULT);
+
+    // The program is not installed in default location
+    wxLocale::AddCatalogLookupPathPrefix("po");
+    const wxLanguageInfo* lInfo = wxLocale::GetLanguageInfo(m_lang);
+    m_locale.AddCatalog("HomeAdmin");
+        
+    m_frame = new cMainFrame(m_locale);
     m_frame->Show();
     return true;
 }
